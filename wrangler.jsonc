@@ -1,0 +1,40 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "skrbc-website",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "skrbc-website",
+    },
+  ],
+  "images": {
+    "binding": "IMAGES",
+  },
+  // CMS database. The production database_id is set when the client's
+  // Cloudflare account is created (deployment phase).
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "skrbc-db",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "drizzle/migrations",
+    },
+  ],
+  // CMS media uploads (article and case-study images).
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "skrbc-media",
+    },
+  ],
+  "observability": {
+    "enabled": true,
+  },
+}

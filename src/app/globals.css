@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Design tokens (colors, fonts, spacing) are defined in Phase 1 after the design review. */
+
+body {
+  background: #ffffff;
+  color: #171717;
+}

@@ -1,0 +1,12 @@
+.next/
+.open-next/
+.wrangler/
+node_modules/
+client-materials/
+package-lock.json
+cloudflare-env.d.ts
+next-env.d.ts
+
+# Root-level markdown is internal (not formatted), except the README.
+/*.md
+!/README.md
