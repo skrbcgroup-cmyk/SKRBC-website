@@ -26,6 +26,12 @@ export const siteImages = {
     height: 1600,
     blurDataURL: "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAABQAgCdASoQAAsAA4BaJQBOgMWg1RTtYtI7HgAA/phVqDaPo9OXao6U98AjtHIid/hkbYd6E0d9fYwvKhMg2JD6mH/sJZhiL0rMML5Ib9TLZnF3T4xzpPvQjEORMAAA",
   },
+  officeInterior: {
+    src: "/images/office-interior",
+    width: 2400,
+    height: 1602,
+    blurDataURL: "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAQCdASoQAAsAA4BaJZQC7AELR5AAAP40cINYvSMnya0CVd7am4uMmgIAK0wMumII68mnQ0zzRYOJspYHv7TI9YAAAA==",
+  },
   saudKhan: {
     src: "/images/saud-khan",
     width: 1099,

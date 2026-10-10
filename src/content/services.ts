@@ -4,6 +4,7 @@ import {
   LockKeyhole,
   Presentation,
   ShieldCheck,
+  TrendingUp,
   Workflow,
   type LucideIcon,
 } from "lucide-react";
@@ -62,4 +63,145 @@ export const homeServices: ServiceSummary[] = [
     href: routes.trainingAdvisory,
     icon: Presentation,
   },
+];
+
+export type ServiceDetail = {
+  /** Anchor on the Services page, e.g. /services#risk-management. */
+  id: string;
+  title: string;
+  description: string;
+  keyServices: string[];
+  icon: LucideIcon;
+  /** Dedicated service page. Services without one are covered fully on the Services page. */
+  href?: string;
+};
+
+/** The seven service areas on the Services page (spec section 7). */
+export const services: ServiceDetail[] = [
+  {
+    id: "risk-management",
+    title: "Risk Management Consulting",
+    description:
+      "Knowing where a business is exposed before something goes wrong. We identify, assess and prioritise business, operational and project risks, then help put practical controls in place.",
+    keyServices: [
+      "Business risk assessments",
+      "Operational risk assessments",
+      "Project risk assessments",
+      "Event risk assessments",
+      "Risk identification",
+      "Risk analysis",
+      "Risk mitigation",
+      "Risk registers",
+      "Business continuity considerations",
+      "Partnership risk review",
+      "Contract risk review",
+      "Security risk assessment",
+    ],
+    icon: ShieldCheck,
+    href: routes.riskManagement,
+  },
+  {
+    id: "insurance-claims",
+    title: "Insurance & Claims Consulting",
+    description:
+      "Consulting informed by more than 9 years of Canadian insurance and property-claims experience. We help businesses understand claims processes, organise documentation and prepare for property losses, as a consulting and advisory service.",
+    keyServices: [
+      "Claims process consulting",
+      "Claims documentation review",
+      "Property claims consulting",
+      "Property loss documentation",
+      "Claims file organization",
+      "Risk identification",
+      "Claims process improvement",
+      "Insurance-related business advisory",
+      "Property risk considerations",
+    ],
+    icon: House,
+    href: routes.insuranceClaims,
+  },
+  {
+    id: "business-consulting",
+    title: "Business Consulting",
+    description:
+      "Business strategy, advisory and decision-making support. We work with owners and managers on assessments, planning, partnerships and proposals, giving clear input on the decisions that shape the business.",
+    keyServices: [
+      "Business assessments",
+      "Business planning",
+      "Partnership assessments",
+      "Proposal development",
+      "Negotiation support",
+      "Strategic advisory",
+      "Project advisory",
+    ],
+    icon: BriefcaseBusiness,
+    href: routes.businessOperational,
+  },
+  {
+    id: "operational-consulting",
+    title: "Operational Consulting",
+    description:
+      "Reviewing how a business runs day to day and identifying improvements that make operations more reliable. The focus is on processes, responsibilities and the operational risks that hold a business back.",
+    keyServices: [
+      "Operational reviews",
+      "Process improvement",
+      "Operational risk assessments",
+      "Operational risk management",
+    ],
+    icon: Workflow,
+    href: routes.businessOperational,
+  },
+  {
+    id: "security-risk",
+    title: "Security Risk Consulting",
+    description:
+      "Identifying security-related risks and developing mitigation strategies for businesses, sites and events. This is advisory work covering assessments, planning and procedures, not guarding services.",
+    keyServices: [
+      "Security risk assessments",
+      "Business security reviews",
+      "Event security risk assessments",
+      "Site risk assessments",
+      "Security planning",
+      "Security procedures",
+      "Incident preparedness",
+      "Risk mitigation",
+      "Security operations advisory",
+    ],
+    icon: LockKeyhole,
+    href: routes.securityRisk,
+  },
+  {
+    id: "training-advisory",
+    title: "Training & Advisory",
+    description:
+      "Professional training and customized advisory support. Sessions draw on practical risk and claims experience and are shaped around the needs of each team and organization.",
+    keyServices: [
+      "Risk awareness training",
+      "Documentation and record-keeping practices",
+      "Customized advisory sessions",
+      "Ongoing advisory support",
+    ],
+    icon: Presentation,
+  },
+  {
+    id: "business-development-advisory",
+    title: "Business Development Advisory",
+    description:
+      "Support for businesses looking to grow, form partnerships or take on new projects. We help assess opportunities, prepare proposals and approach negotiations with a clear view of the risks involved.",
+    keyServices: [
+      "Opportunity assessment",
+      "Partnership risk review",
+      "Proposal development",
+      "Negotiation support",
+    ],
+    icon: TrendingUp,
+  },
+];
+
+/** How an engagement starts (spec section 18). */
+export const engagementSteps = [
+  "Initial consultation",
+  "Understand your business and requirements",
+  "Identify the scope of work",
+  "Provide a customized proposal and fee",
+  "Begin the engagement upon approval",
 ];
