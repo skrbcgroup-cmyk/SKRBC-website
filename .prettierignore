@@ -3,9 +3,11 @@
 .wrangler/
 node_modules/
 client-materials/
+design-previews/
 package-lock.json
 cloudflare-env.d.ts
 next-env.d.ts
+src/content/images.generated.ts
 
 # Root-level markdown is internal (not formatted), except the README.
 /*.md

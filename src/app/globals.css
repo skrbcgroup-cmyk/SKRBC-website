@@ -1,8 +1,109 @@
 @import "tailwindcss";
 
-/* Design tokens (colors, fonts, spacing) are defined in Phase 1 after the design review. */
+/*
+ * SKRBC design tokens (approved palette: Navy + Gold).
+ * Contrast checked: every text pairing used on the site meets WCAG AA (4.5:1).
+ */
+@theme {
+  --color-navy-950: #0a1422;
+  --color-navy-900: #0f1c2e;
+  --color-navy-800: #16263c;
+  --color-navy-700: #22354f;
 
-body {
-  background: #ffffff;
-  color: #171717;
+  --color-gold-300: #e6cf9b;
+  --color-gold-400: #d8b469;
+  --color-gold-500: #c9a253;
+  /* Gold for text on white or ivory backgrounds. */
+  --color-gold-700: #8c6a2a;
+
+  --color-ivory: #f6f4ef;
+  --color-ink: #1f2933;
+  --color-slate: #5b6673;
+  /* Muted text on navy backgrounds. */
+  --color-mist: #a9b3bf;
+  --color-line: #e4dfd4;
+  --color-whatsapp: #25d366;
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+
+  --container-site: 75rem;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-300);
+    color: var(--color-navy-900);
+  }
+}
+
+/* Scroll reveal: content starts visible and is only hidden once JS has marked it. */
+@layer components {
+  [data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  [data-reveal="shown"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.7s var(--ease-soft),
+      transform 0.7s var(--ease-soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

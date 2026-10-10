@@ -1,11 +1,32 @@
+import type { Metadata } from "next";
+
+import { CanadianExperience } from "@/components/home/canadian-experience";
+import { ContactCta } from "@/components/home/contact-cta";
+import { FounderIntro } from "@/components/home/founder-intro";
+import { Hero } from "@/components/home/hero";
+import { OurApproach } from "@/components/home/our-approach";
+import { ServicesOverview } from "@/components/home/services-overview";
+import { StatsStrip } from "@/components/home/stats-strip";
+import { WhySkrbc } from "@/components/home/why-skrbc";
 import { siteConfig } from "@/config/site";
 
-// Temporary placeholder — replaced by the real homepage in Phase 2.
+export const metadata: Metadata = {
+  title: {
+    absolute: `${siteConfig.name} | Risk Management & Business Consulting in Pakistan`,
+  },
+};
+
 export default function HomePage() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
-      <h1 className="text-3xl font-semibold tracking-tight">{siteConfig.name}</h1>
-      <p className="text-lg text-neutral-600">{siteConfig.tagline}</p>
-    </main>
+    <>
+      <Hero />
+      <StatsStrip />
+      <CanadianExperience />
+      <ServicesOverview />
+      <WhySkrbc />
+      <OurApproach />
+      <FounderIntro />
+      <ContactCta />
+    </>
   );
 }
