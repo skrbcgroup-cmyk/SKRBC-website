@@ -5,6 +5,8 @@ import { ContactCta } from "@/components/sections/contact-cta";
 import { PageHero } from "@/components/sections/page-hero";
 import { getPublishedCaseStudies } from "@/lib/case-studies";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Case Studies",
   description:

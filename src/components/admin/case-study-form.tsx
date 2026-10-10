@@ -6,34 +6,37 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, useTransition } from "react";
 
 import {
-  deleteArticle,
-  saveArticle,
-  uploadArticleImage,
-  type ArticleInput,
-} from "@/app/admin/(panel)/articles/actions";
+  deleteCaseStudy,
+  saveCaseStudy,
+  uploadCaseStudyImage,
+  type CaseStudyInput,
+} from "@/app/admin/(panel)/case-studies/actions";
 import { CoverImageField } from "@/components/admin/cover-image-field";
 import { AdminField as Field, adminInputClass as inputClass } from "@/components/admin/form-field";
 import { RichTextEditor } from "@/components/admin/rich-text-editor";
-import { insightCategories } from "@/content/insight-categories";
+import {
+  caseStudySectionFields,
+  serviceOptions,
+  type SectionKey,
+} from "@/content/case-study-options";
 import { cn } from "@/lib/cn";
 import { plainText, sanitizeDoc } from "@/lib/rich-text";
 import { slugify } from "@/lib/slug";
 
-type FieldErrors = Partial<Record<keyof ArticleInput, string[]>>;
+type FieldErrors = Partial<Record<keyof CaseStudyInput, string[]>>;
 
-export type ArticleFormValues = Omit<ArticleInput, "intent" | "category"> & {
-  category: string;
+export type CaseStudyFormValues = Omit<CaseStudyInput, "intent"> & {
   status: "draft" | "published";
 };
 
-export function ArticleForm({
+export function CaseStudyForm({
   initial,
-  initialEditorJson,
+  initialSections,
   savedNotice,
 }: {
-  initial: ArticleFormValues;
-  initialEditorJson: object;
-  /** Set after the first save of a new article, which moves to its edit page. */
+  initial: CaseStudyFormValues;
+  /** Editor JSON for each of the six sections. */
+  initialSections: Record<SectionKey, object>;
   savedNotice?: "draft" | "published";
 }) {
   const router = useRouter();
@@ -44,32 +47,37 @@ export function ArticleForm({
     savedNotice
       ? {
           tone: "success",
-          text: savedNotice === "published" ? "Article published." : "Draft saved.",
+          text: savedNotice === "published" ? "Case study published." : "Draft saved.",
         }
       : null,
   );
-
-  // Clear the one-time notice from the address bar.
-  useEffect(() => {
-    if (savedNotice) router.replace(`/admin/articles/${initial.id}`, { scroll: false });
-  }, [savedNotice, initial.id, router]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [pending, startTransition] = useTransition();
 
-  const set = <K extends keyof ArticleFormValues>(key: K, value: ArticleFormValues[K]) => {
+  useEffect(() => {
+    if (savedNotice) router.replace(`/admin/case-studies/${initial.id}`, { scroll: false });
+  }, [savedNotice, initial.id, router]);
+
+  const set = <K extends keyof CaseStudyFormValues>(key: K, value: CaseStudyFormValues[K]) => {
     setValues((current) => ({ ...current, [key]: value }));
-    // Editing a field clears its error message.
     setErrors((current) => (key in current ? { ...current, [key]: undefined } : current));
   };
+
+  const sectionLengths = useMemo(
+    () =>
+      Object.fromEntries(
+        caseStudySectionFields.map((field) => [
+          field.key,
+          plainText(sanitizeDoc(values[field.key])).length,
+        ]),
+      ) as Record<SectionKey, number>,
+    [values],
+  );
 
   const submit = (intent: "draft" | "publish") => {
     setMessage(null);
     startTransition(async () => {
-      const result = await saveArticle({
-        ...values,
-        category: values.category as ArticleInput["category"],
-        intent,
-      });
+      const result = await saveCaseStudy({ ...values, intent });
       if (!result.ok) {
         setErrors(result.fieldErrors ?? {});
         setMessage({ tone: "error", text: result.error });
@@ -80,9 +88,9 @@ export function ArticleForm({
       setValues((current) => ({ ...current, id: result.id, status: result.status }));
       setMessage({
         tone: "success",
-        text: result.status === "published" ? "Article published." : "Draft saved.",
+        text: result.status === "published" ? "Case study published." : "Draft saved.",
       });
-      if (!values.id) router.replace(`/admin/articles/${result.id}?saved=${result.status}`);
+      if (!values.id) router.replace(`/admin/case-studies/${result.id}?saved=${result.status}`);
       else router.refresh();
     });
   };
@@ -90,32 +98,28 @@ export function ArticleForm({
   const remove = () => {
     if (!values.id) return;
     startTransition(async () => {
-      const result = await deleteArticle(values.id!);
+      const result = await deleteCaseStudy(values.id!);
       if (result.ok) {
-        router.replace("/admin/articles");
+        router.replace("/admin/case-studies");
         router.refresh();
       } else {
-        setMessage({ tone: "error", text: "This article could not be deleted." });
+        setMessage({ tone: "error", text: "This case study could not be deleted." });
       }
     });
   };
 
   const isPublished = values.status === "published";
-  const articleLength = useMemo(
-    () => plainText(sanitizeDoc(values.content)).length,
-    [values.content],
-  );
-  const first = (key: keyof ArticleInput) => errors[key]?.[0];
+  const first = (key: keyof CaseStudyInput) => errors[key]?.[0];
 
   return (
     <div className="max-w-6xl">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <Link href="/admin/articles" className="text-sm text-gold-700 hover:underline">
-            Back to insights
+          <Link href="/admin/case-studies" className="text-sm text-gold-700 hover:underline">
+            Back to case studies
           </Link>
           <h1 className="mt-2 text-3xl text-navy-900">
-            {values.id ? "Edit article" : "New article"}
+            {values.id ? "Edit case study" : "New case study"}
           </h1>
         </div>
         <span
@@ -143,7 +147,7 @@ export function ArticleForm({
             <>
               {" "}
               <a
-                href={`/insights/${values.slug}`}
+                href={`/case-studies/${values.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 underline"
@@ -180,18 +184,18 @@ export function ArticleForm({
 
           <Field
             label="Summary"
-            hint={`Shown on the Insights page and in search results. At least 20 characters to publish. ${values.excerpt.trim().length} / 300`}
-            error={first("excerpt")}
+            hint={`Shown on the Case Studies page. At least 20 characters to publish. ${values.summary.trim().length} / 300`}
+            error={first("summary")}
           >
             {({ id, describedBy, invalid }) => (
               <textarea
                 id={id}
                 rows={3}
                 maxLength={300}
-                value={values.excerpt}
+                value={values.summary}
                 aria-describedby={describedBy}
                 aria-invalid={invalid || undefined}
-                onChange={(event) => set("excerpt", event.target.value)}
+                onChange={(event) => set("summary", event.target.value)}
                 className={cn(
                   "block w-full resize-y border bg-white px-4 py-3 text-base text-ink focus:border-navy-900",
                   invalid ? "border-danger" : "border-line",
@@ -200,26 +204,31 @@ export function ArticleForm({
             )}
           </Field>
 
-          <Field
-            label="Article"
-            hint={`At least 50 characters of text to publish. ${articleLength} characters so far.`}
-            error={first("content")}
-          >
-            {({ id, describedBy, invalid }) => (
-              <RichTextEditor
-                id={id}
-                initialContent={initialEditorJson}
-                describedBy={describedBy}
-                invalid={invalid}
-                uploadImage={uploadArticleImage}
-                onChange={(json) => set("content", json)}
-              />
-            )}
-          </Field>
+          {caseStudySectionFields.map((field, index) => (
+            <Field
+              key={field.key}
+              label={`${String(index + 1).padStart(2, "0")}. ${field.title}`}
+              hint={`${field.hint} At least 20 characters to publish. ${sectionLengths[field.key]} so far.`}
+              error={first(field.key)}
+            >
+              {({ id, describedBy, invalid }) => (
+                <RichTextEditor
+                  id={id}
+                  compact
+                  label={field.title}
+                  initialContent={initialSections[field.key]}
+                  describedBy={describedBy}
+                  invalid={invalid}
+                  uploadImage={uploadCaseStudyImage}
+                  onChange={(json) => set(field.key, json)}
+                />
+              )}
+            </Field>
+          ))}
         </div>
 
         <aside className="space-y-6">
-          <div className="space-y-3 bg-white p-5">
+          <div className="space-y-3 bg-white p-5 lg:sticky lg:top-6">
             <button
               type="button"
               disabled={pending}
@@ -240,26 +249,38 @@ export function ArticleForm({
           </div>
 
           <div className="space-y-6 bg-white p-5">
-            <Field label="Category" error={first("category")}>
+            <Field label="Client or project" error={first("client")}>
+              {({ id, describedBy, invalid }) => (
+                <input
+                  id={id}
+                  value={values.client}
+                  maxLength={150}
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid || undefined}
+                  onChange={(event) => set("client", event.target.value)}
+                  className={cn(inputClass, invalid ? "border-danger" : "border-line")}
+                />
+              )}
+            </Field>
+
+            <Field label="Service" error={first("service")}>
               {({ id, describedBy, invalid }) => (
                 <select
                   id={id}
-                  value={values.category}
+                  value={values.service}
                   aria-describedby={describedBy}
                   aria-invalid={invalid || undefined}
-                  onChange={(event) => set("category", event.target.value)}
+                  onChange={(event) => set("service", event.target.value)}
                   className={cn(
                     inputClass,
                     "cursor-pointer",
                     invalid ? "border-danger" : "border-line",
                   )}
                 >
-                  <option value="" disabled>
-                    Choose a category
-                  </option>
-                  {insightCategories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
+                  <option value="">Choose a service</option>
+                  {serviceOptions.map((service) => (
+                    <option key={service} value={service}>
+                      {service}
                     </option>
                   ))}
                 </select>
@@ -268,7 +289,7 @@ export function ArticleForm({
 
             <Field
               label="Web address"
-              hint={`/insights/${values.slug || "..."}`}
+              hint={`/case-studies/${values.slug || "..."}`}
               error={first("slug")}
             >
               {({ id, describedBy, invalid }) => (
@@ -299,7 +320,7 @@ export function ArticleForm({
             <CoverImageField
               imageKey={values.coverImageKey}
               alt={values.coverImageAlt ?? ""}
-              uploadImage={uploadArticleImage}
+              uploadImage={uploadCaseStudyImage}
               onChange={({ key, alt }) =>
                 setValues((current) => ({ ...current, coverImageKey: key, coverImageAlt: alt }))
               }
@@ -314,7 +335,7 @@ export function ArticleForm({
               <Field
                 label="SEO title"
                 optional
-                hint={`Leave empty to use the article title. ${values.seoTitle?.length ?? 0} / 70`}
+                hint={`Leave empty to use the title. ${values.seoTitle?.length ?? 0} / 70`}
                 error={first("seoTitle")}
               >
                 {({ id, describedBy }) => (
@@ -354,7 +375,7 @@ export function ArticleForm({
               {confirmDelete ? (
                 <div className="space-y-3">
                   <p className="text-sm text-ink">
-                    Delete this article permanently? This cannot be undone.
+                    Delete this case study permanently? This cannot be undone.
                   </p>
                   <div className="flex gap-2">
                     <button
@@ -380,7 +401,7 @@ export function ArticleForm({
                   onClick={() => setConfirmDelete(true)}
                   className="min-h-10 cursor-pointer text-sm text-danger hover:underline"
                 >
-                  Delete article
+                  Delete case study
                 </button>
               )}
             </div>

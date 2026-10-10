@@ -202,3 +202,15 @@ export function plainText(doc: RichDoc): string {
   walk(doc);
   return parts.join(" ").replace(/\s+/g, " ").trim();
 }
+
+/** Media keys of the images used in a document, e.g. "uploads/2026/<uuid>.webp". */
+export function imageKeysIn(doc: RichDoc): string[] {
+  return doc.flatMap((node): string[] => {
+    if (node.type === "image") return [node.src.replace(/^\/media\//, "")];
+    if (node.type === "blockquote") return imageKeysIn(node.content);
+    if (node.type === "bulletList" || node.type === "orderedList") {
+      return node.items.flatMap(imageKeysIn);
+    }
+    return [];
+  });
+}

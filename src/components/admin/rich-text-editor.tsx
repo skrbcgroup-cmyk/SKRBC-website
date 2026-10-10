@@ -287,6 +287,10 @@ type RichTextEditorProps = {
   uploadImage: (formData: FormData) => Promise<UploadResult>;
   describedBy?: string;
   invalid?: boolean;
+  /** Accessible name of the editing area. */
+  label?: string;
+  /** Smaller editing area, for forms with several editors. */
+  compact?: boolean;
 };
 
 export function RichTextEditor({
@@ -296,6 +300,8 @@ export function RichTextEditor({
   uploadImage,
   describedBy,
   invalid,
+  label = "Article text",
+  compact = false,
 }: RichTextEditorProps) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -318,10 +324,10 @@ export function RichTextEditor({
         id,
         role: "textbox",
         "aria-multiline": "true",
-        "aria-label": "Article text",
+        "aria-label": label,
         ...(describedBy && { "aria-describedby": describedBy }),
         ...(invalid && { "aria-invalid": "true" }),
-        class: "prose-skrbc min-h-80 px-5 py-4 outline-none",
+        class: cn("prose-skrbc px-5 py-4 outline-none", compact ? "min-h-40" : "min-h-80"),
       },
     },
     onUpdate: ({ editor: e }) => onChange(JSON.stringify(e.getJSON())),

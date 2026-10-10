@@ -9,7 +9,7 @@ import { getDb } from "@/db/client";
 import { articles } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth/session";
 import { deleteImage, isValidMediaKey, storeImage, type UploadResult } from "@/lib/media";
-import { plainText, sanitizeDoc, toEditorJson, type RichDoc } from "@/lib/rich-text";
+import { imageKeysIn, plainText, sanitizeDoc, toEditorJson } from "@/lib/rich-text";
 import { SLUG_PATTERN } from "@/lib/slug";
 
 /** Minimum lengths (in characters) an article needs before it can be published. */
@@ -46,18 +46,6 @@ export type ArticleInput = z.input<typeof articleSchema>;
 export type SaveResult =
   | { ok: true; id: number; status: "draft" | "published" }
   | { ok: false; error: string; fieldErrors?: Partial<Record<keyof ArticleInput, string[]>> };
-
-/** Media keys used inside a document, so their files can be removed with the article. */
-function imageKeys(doc: RichDoc): string[] {
-  return doc.flatMap((node): string[] => {
-    if (node.type === "image") return [node.src.replace(/^\/media\//, "")];
-    if (node.type === "blockquote") return imageKeys(node.content);
-    if (node.type === "bulletList" || node.type === "orderedList") {
-      return node.items.flatMap(imageKeys);
-    }
-    return [];
-  });
-}
 
 export async function saveArticle(input: ArticleInput): Promise<SaveResult> {
   await requireAdmin();
@@ -149,8 +137,8 @@ export async function saveArticle(input: ArticleInput): Promise<SaveResult> {
     id = existing.id;
 
     // Remove files that are no longer used by this article.
-    const stillUsed = new Set([data.coverImageKey, ...imageKeys(doc)]);
-    const previous = [existing.coverImageKey, ...imageKeys(sanitizeDoc(existing.content))];
+    const stillUsed = new Set([data.coverImageKey, ...imageKeysIn(doc)]);
+    const previous = [existing.coverImageKey, ...imageKeysIn(sanitizeDoc(existing.content))];
     await Promise.all(previous.filter((key) => key && !stillUsed.has(key)).map(deleteImage));
 
     if (existing.slug !== data.slug) revalidatePath(`/insights/${existing.slug}`);
@@ -172,7 +160,7 @@ export async function deleteArticle(id: number): Promise<{ ok: boolean }> {
 
   await db.delete(articles).where(eq(articles.id, id));
   await Promise.all(
-    [existing.coverImageKey, ...imageKeys(sanitizeDoc(existing.content))].map(deleteImage),
+    [existing.coverImageKey, ...imageKeysIn(sanitizeDoc(existing.content))].map(deleteImage),
   );
 
   revalidatePath("/insights");

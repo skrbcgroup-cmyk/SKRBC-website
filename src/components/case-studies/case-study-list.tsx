@@ -6,7 +6,8 @@ import { ButtonLink } from "@/components/ui/button-link";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { routes } from "@/config/navigation";
-import { caseStudySections, type CaseStudySummary } from "@/lib/case-studies";
+import { caseStudySectionFields } from "@/content/case-study-options";
+import type { CaseStudySummary } from "@/lib/case-studies";
 
 function CaseStudyCard({ caseStudy }: { caseStudy: CaseStudySummary }) {
   return (
@@ -94,13 +95,13 @@ export function CaseStudyStructure() {
         </Reveal>
 
         <Reveal as="ol" className="mt-14 grid gap-x-8 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-          {caseStudySections.map((section, index) => (
+          {caseStudySectionFields.map((section, index) => (
             <li key={section.title} className="border-t border-white/12 py-7">
               <span aria-hidden="true" className="font-serif text-lg text-gold-500">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-3 text-[1.375rem]">{section.title}</h3>
-              <p className="mt-2 text-[0.9375rem] text-mist">{section.text}</p>
+              <p className="mt-2 text-[0.9375rem] text-mist">{section.hint}</p>
             </li>
           ))}
         </Reveal>
