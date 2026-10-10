@@ -3,6 +3,7 @@ import { Info } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { cn } from "@/lib/cn";
 
 type ServiceOfferingsProps = {
   eyebrow: string;
@@ -15,6 +16,11 @@ type ServiceOfferingsProps = {
 
 /** Numbered list of what a service can include, laid out as a hairline grid. */
 export function ServiceOfferings({ eyebrow, title, intro, items, note }: ServiceOfferingsProps) {
+  // Three columns only when the rows fill evenly; otherwise two, so no row is left half empty.
+  const threeColumns = items.length % 3 === 0;
+  // With an odd count in a two-column grid, the last item spans the full row.
+  const oddCount = items.length % 2 === 1;
+
   return (
     <section className="bg-ivory py-20 lg:py-32">
       <Container>
@@ -30,12 +36,19 @@ export function ServiceOfferings({ eyebrow, title, intro, items, note }: Service
 
         <Reveal
           as="ul"
-          className="mt-12 grid border-t border-l border-line sm:grid-cols-2 lg:mt-16 lg:grid-cols-3"
+          className={cn(
+            "mt-12 grid border-t border-l border-line sm:grid-cols-2 lg:mt-16",
+            threeColumns && "lg:grid-cols-3",
+          )}
         >
           {items.map((item, index) => (
             <li
               key={item}
-              className="flex items-baseline gap-5 border-r border-b border-line bg-ivory px-6 py-6 sm:px-8 sm:py-7"
+              className={cn(
+                "flex items-baseline gap-5 border-r border-b border-line bg-ivory px-6 py-6 sm:px-8 sm:py-7",
+                oddCount && "sm:last:col-span-2",
+                oddCount && threeColumns && "lg:last:col-span-1",
+              )}
             >
               <span aria-hidden="true" className="font-serif text-[0.9375rem] text-gold-700">
                 {String(index + 1).padStart(2, "0")}

@@ -20,6 +20,12 @@ export const siteImages = {
     height: 1200,
     blurDataURL: "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAACwAQCdASoQAAsAA4BaJYgCdABzdEQwAP5BJUS1NMMVcrnIzJ1Cct6KcTIdz5lUki9liSfCXUm8O6bCc7vCwHjHrNGHgzkr0I5OqyAoPMdrnfcnaPGrpuLjr8lg4rwA",
   },
+  conferenceRoom: {
+    src: "/images/conference-room",
+    width: 2400,
+    height: 1602,
+    blurDataURL: "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAQCdASoQAAsAA4BaJZwCsACVEfI/AAD+Ttuhi9EL170ik8FE++T0EetQS3qCS71gyZO4qPoiSEQbPaa++CpNC/x99BU0EuKXaqZZ1yLWPUxeDPAAAA==",
+  },
   ctaDocumentReview: {
     src: "/images/cta-document-review",
     width: 1800,
