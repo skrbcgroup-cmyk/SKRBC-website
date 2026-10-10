@@ -5,7 +5,7 @@ import { CircleCheck, LoaderCircle } from "lucide-react";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { useForm, useWatch, type FieldError } from "react-hook-form";
 
-import { submitInquiry } from "@/app/contact/actions";
+import { submitInquiry } from "@/app/(site)/contact/actions";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/cn";
 import {
