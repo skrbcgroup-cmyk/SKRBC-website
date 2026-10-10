@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { cn } from "@/lib/cn";
 
 type FocusArea = { title: string; text: string; points: string[] };
 
@@ -24,7 +25,12 @@ export function FocusAreas({ eyebrow, title, areas }: FocusAreasProps) {
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 lg:mt-16 lg:grid-cols-2">
+        <div
+          className={cn(
+            "mt-12 grid gap-6 lg:mt-16",
+            areas.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2",
+          )}
+        >
           {areas.map((area, index) => (
             <Reveal
               key={area.title}

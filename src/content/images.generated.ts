@@ -50,6 +50,12 @@ export const siteImages = {
     height: 1374,
     blurDataURL: "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAAAQBACdASoQABQAPu1iqU2ppaOiMAgBMB2JYwCdABulCQ0Y/uXzVM6iAAD+0Vvgyb8GOOrMw3/oYmJXz2dbjgC80cax+j3lb/0KhylD7hvk/u4em50fik7Smp0ytZtZ415M7RGXB6Cjsf2PCcf8YUmL3F+DvptXgHXz+1bsnnyEXBkHIyIroAB7DTgxgjsUQAA=",
   },
+  securityCameras: {
+    src: "/images/security-cameras",
+    width: 2400,
+    height: 1614,
+    blurDataURL: "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoQAAsAA4BaJaQAAtrPDQeWAAD+Fta04f+nqKYD1ySsXEgAXvTr/axOqrotCMoAAAA=",
+  },
   torontoSkyline: {
     src: "/images/toronto-skyline",
     width: 2400,
