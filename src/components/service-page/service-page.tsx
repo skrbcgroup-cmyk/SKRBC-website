@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { ContactCta } from "@/components/sections/contact-cta";
 import { PageHero } from "@/components/sections/page-hero";
 import { ProcessSteps } from "@/components/sections/process-steps";
@@ -11,10 +13,12 @@ type ServicePageProps = {
   content: ServicePageContent;
   href: string;
   heroImage: SiteImage;
+  /** Extra page-specific sections, placed after the offerings. */
+  children?: ReactNode;
 };
 
 /** Shared layout for the four dedicated service pages. */
-export function ServicePage({ content, href, heroImage }: ServicePageProps) {
+export function ServicePage({ content, href, heroImage, children }: ServicePageProps) {
   const { hero, intro, offerings, process, cta } = content;
 
   return (
@@ -31,7 +35,9 @@ export function ServicePage({ content, href, heroImage }: ServicePageProps) {
         title={offerings.title}
         intro={offerings.intro}
         items={offerings.items}
+        note={offerings.note}
       />
+      {children}
       {process && (
         <ProcessSteps
           eyebrow="Our Process"

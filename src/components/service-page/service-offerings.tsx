@@ -1,3 +1,5 @@
+import { Info } from "lucide-react";
+
 import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
@@ -7,10 +9,12 @@ type ServiceOfferingsProps = {
   title: string;
   intro: string;
   items: string[];
+  /** Optional clarification shown under the list, e.g. what the service is not. */
+  note?: string;
 };
 
 /** Numbered list of what a service can include, laid out as a hairline grid. */
-export function ServiceOfferings({ eyebrow, title, intro, items }: ServiceOfferingsProps) {
+export function ServiceOfferings({ eyebrow, title, intro, items, note }: ServiceOfferingsProps) {
   return (
     <section className="bg-ivory py-20 lg:py-32">
       <Container>
@@ -40,6 +44,17 @@ export function ServiceOfferings({ eyebrow, title, intro, items }: ServiceOfferi
             </li>
           ))}
         </Reveal>
+
+        {note && (
+          <p className="mt-8 flex gap-3 border-l-2 border-gold-500 bg-white px-5 py-4 text-[0.9375rem] text-ink">
+            <Info
+              aria-hidden="true"
+              strokeWidth={1.75}
+              className="mt-0.5 size-5 shrink-0 text-gold-700"
+            />
+            {note}
+          </p>
+        )}
       </Container>
     </section>
   );

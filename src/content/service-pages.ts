@@ -8,7 +8,7 @@ export type ServicePageContent = {
     paragraphs: string[];
     aside: { title: string; items: string[] };
   };
-  offerings: { title: string; intro: string; items: string[] };
+  offerings: { title: string; intro: string; items: string[]; note?: string };
   process?: { title: string; intro: string; steps: FiveSteps };
   cta: { title: string; text: string; buttonLabel: string };
 };
