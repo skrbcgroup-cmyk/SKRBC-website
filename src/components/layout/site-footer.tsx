@@ -111,10 +111,12 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <p className="flex flex-wrap gap-y-2 border-t border-white/10 py-6 text-sm text-white/85">
+        <p className="flex flex-col gap-y-2 border-t border-white/10 py-6 text-sm text-white/85 sm:flex-row sm:flex-wrap">
           {siteConfig.credibility.map((item, index) => (
             <span key={item} className="flex items-center">
-              {index > 0 && <span aria-hidden="true" className="mx-4 h-3.5 w-px bg-gold-500" />}
+              {index > 0 && (
+                <span aria-hidden="true" className="mx-4 hidden h-3.5 w-px bg-gold-500 sm:block" />
+              )}
               {item}
             </span>
           ))}

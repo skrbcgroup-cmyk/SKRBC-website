@@ -32,6 +32,12 @@ export const siteImages = {
     height: 1374,
     blurDataURL: "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAAAQBACdASoQABQAPu1iqU2ppaOiMAgBMB2JYwCdABulCQ0Y/uXzVM6iAAD+0Vvgyb8GOOrMw3/oYmJXz2dbjgC80cax+j3lb/0KhylD7hvk/u4em50fik7Smp0ytZtZ415M7RGXB6Cjsf2PCcf8YUmL3F+DvptXgHXz+1bsnnyEXBkHIyIroAB7DTgxgjsUQAA=",
   },
+  torontoSkyline: {
+    src: "/images/toronto-skyline",
+    width: 2400,
+    height: 1600,
+    blurDataURL: "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAQCdASoQAAsAA4BaJZQC7ACRtboAAP2thsT8fEx/JKXTnUzjA5Iu0OXBGdsIx6kBSo8KPaOBSFvTRp5sYPi/AAA=",
+  },
   logoHorizontalOnDark: {
     src: "/images/logo-horizontal-on-dark",
     width: 1040,
