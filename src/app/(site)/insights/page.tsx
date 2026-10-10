@@ -6,6 +6,8 @@ import { PageHero } from "@/components/sections/page-hero";
 import { ServiceOfferings } from "@/components/service-page/service-offerings";
 import { getPublishedArticles, plannedTopics } from "@/lib/insights";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Insights",
   description:

@@ -68,7 +68,7 @@ export const articles = sqliteTable(
     title: text("title").notNull(),
     excerpt: text("excerpt").notNull().default(""),
     category: text("category").notNull().default(""),
-    /** Sanitised HTML from the editor. */
+    /** Editor document as JSON, sanitised by src/lib/rich-text.ts on save and on render. */
     content: text("content").notNull().default(""),
     coverImageKey: text("cover_image_key"),
     coverImageAlt: text("cover_image_alt"),

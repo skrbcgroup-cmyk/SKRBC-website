@@ -17,7 +17,7 @@ type NavItem = {
 
 const items: NavItem[] = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard, ready: true },
-  { label: "Insights", href: "/admin/articles", icon: FileText, ready: false },
+  { label: "Insights", href: "/admin/articles", icon: FileText, ready: true },
   { label: "Case Studies", href: "/admin/case-studies", icon: FolderOpen, ready: false },
   { label: "Inquiries", href: "/admin/inquiries", icon: Mail, ready: false },
 ];

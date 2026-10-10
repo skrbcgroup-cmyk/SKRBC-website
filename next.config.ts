@@ -5,6 +5,12 @@ import imageWidths from "./src/config/image-widths.json";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: {
+    serverActions: {
+      // Admin image uploads are resized to WebP in the browser first, so they stay well below this.
+      bodySizeLimit: "3mb",
+    },
+  },
   images: {
     // Images are pre-optimized at build time (scripts/optimize-images.mjs),
     // so the Worker never has to transform images at runtime.
