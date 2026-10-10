@@ -25,6 +25,11 @@ export const siteConfig = {
     },
     location: "Rawalpindi, Pakistan",
   },
+  /**
+   * Public Cloudflare Turnstile site key for the contact form (safe to publish).
+   * The matching secret key is a Worker secret: TURNSTILE_SECRET_KEY.
+   */
+  turnstileSiteKey: "0x4AAAAAAFTYWxHRfF5bljRh",
   // Pending from client.
   social: [] as ReadonlyArray<{ label: string; href: string }>,
 } as const;

@@ -6,6 +6,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { useForm, useWatch, type FieldError } from "react-hook-form";
 
 import { submitInquiry } from "@/app/(site)/contact/actions";
+import { Turnstile, type TurnstileHandle } from "@/components/contact/turnstile";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/cn";
 import {
@@ -82,6 +83,8 @@ export function InquiryForm() {
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const successRef = useRef<HTMLDivElement>(null);
+  const turnstile = useRef<TurnstileHandle>(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   // Move focus to the confirmation so keyboard and screen reader users land on it.
   useEffect(() => {
@@ -103,15 +106,21 @@ export function InquiryForm() {
 
   const messageLength = useWatch({ control, name: "message" })?.length ?? 0;
 
-  const onSubmit = handleSubmit(async (values) => {
+  const submitValues = async (values: Inquiry) => {
     setFormError(null);
+    if (!turnstileToken) {
+      setFormError("Please complete the security check above the button, then submit again.");
+      return;
+    }
     try {
-      const result = await submitInquiry(values);
+      const result = await submitInquiry(values, turnstileToken);
       if (result.ok) {
         setSentTo(values.fullName.split(" ")[0] ?? values.fullName);
         reset(defaultValues);
+        turnstile.current?.reset();
         return;
       }
+      if (result.resetChallenge) turnstile.current?.reset();
       for (const [field, messages] of Object.entries(result.fieldErrors ?? {})) {
         if (messages?.[0]) {
           setError(field as keyof InquiryInput, { message: messages[0] }, { shouldFocus: true });
@@ -123,7 +132,7 @@ export function InquiryForm() {
         `Something went wrong while sending your inquiry. Please try again, or message us on WhatsApp at ${siteConfig.contact.whatsapp.display}.`,
       );
     }
-  });
+  };
 
   if (sentTo) {
     return (
@@ -150,7 +159,11 @@ export function InquiryForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="relative grid gap-x-6 gap-y-7 sm:grid-cols-2">
+    <form
+      onSubmit={(event) => void handleSubmit(submitValues)(event)}
+      noValidate
+      className="relative grid gap-x-6 gap-y-7 sm:grid-cols-2"
+    >
       <p className="text-sm text-slate sm:col-span-2">
         Fields marked <span className="text-gold-700">*</span> are required.
       </p>
@@ -302,6 +315,14 @@ export function InquiryForm() {
           Website
           <input type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
         </label>
+      </div>
+
+      <div className="sm:col-span-2">
+        <Turnstile
+          ref={turnstile}
+          siteKey={siteConfig.turnstileSiteKey}
+          onToken={setTurnstileToken}
+        />
       </div>
 
       {formError && (

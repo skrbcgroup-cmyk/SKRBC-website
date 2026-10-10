@@ -127,9 +127,14 @@ export const inquiries = sqliteTable(
     contactMethod: text("contact_method"),
     bestTime: text("best_time"),
     status: text("status", { enum: inquiryStatus }).notNull().default("new"),
+    /** SHA-256 of the sender's IP, used only to limit how often one visitor can submit. */
+    ipHash: text("ip_hash"),
     createdAt: createdAt(),
   },
-  (table) => [index("inquiries_status_created_idx").on(table.status, table.createdAt)],
+  (table) => [
+    index("inquiries_status_created_idx").on(table.status, table.createdAt),
+    index("inquiries_ip_created_idx").on(table.ipHash, table.createdAt),
+  ],
 );
 
 export type AdminUser = typeof adminUsers.$inferSelect;

@@ -1,3 +1,9 @@
 # Copy this file to `.dev.vars` for local development.
-# Never commit `.dev.vars` — it holds real secrets.
+# Never commit `.dev.vars`, it holds real secrets.
 NEXTJS_ENV=development
+
+# Cloudflare Turnstile secret (the public site key lives in src/config/site.ts)
+TURNSTILE_SECRET_KEY=
+
+# Resend (contact form email notifications)
+RESEND_API_KEY=

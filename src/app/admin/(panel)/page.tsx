@@ -1,5 +1,6 @@
 import { count, desc, eq } from "drizzle-orm";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { getDb } from "@/db/client";
 import { articles, caseStudies, inquiries } from "@/db/schema";
@@ -80,13 +81,24 @@ export default async function DashboardPage() {
         ) : (
           <ul className="mt-4 divide-y divide-line">
             {recentInquiries.map((inquiry) => (
-              <li key={inquiry.id} className="flex flex-wrap items-baseline gap-x-4 gap-y-1 py-4">
-                <span className="font-medium text-navy-900">{inquiry.fullName}</span>
-                <span className="text-sm text-slate">{inquiry.companyName}</span>
-                <span className="text-sm text-slate">{inquiry.service}</span>
-                <span className="ml-auto text-sm text-slate">
-                  {dateFormat.format(inquiry.createdAt)}
-                </span>
+              <li key={inquiry.id}>
+                <Link
+                  href={`/admin/inquiries/${inquiry.id}`}
+                  className="-mx-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 rounded-xs px-3 py-4 transition-colors hover:bg-ivory"
+                >
+                  <span
+                    className={
+                      inquiry.status === "new" ? "font-semibold text-navy-900" : "text-navy-900"
+                    }
+                  >
+                    {inquiry.fullName}
+                  </span>
+                  <span className="text-sm text-slate">{inquiry.companyName}</span>
+                  <span className="text-sm text-slate">{inquiry.service}</span>
+                  <span className="ml-auto text-sm text-slate">
+                    {dateFormat.format(inquiry.createdAt)}
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
