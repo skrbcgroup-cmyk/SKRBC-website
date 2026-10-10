@@ -8,6 +8,12 @@ export type SiteImage = {
 };
 
 export const siteImages = {
+  blueprintReview: {
+    src: "/images/blueprint-review",
+    width: 2400,
+    height: 1350,
+    blurDataURL: "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAABQAgCdASoQAAkAA4BaJZQC7AYtVdXdii4PKwAA/vG5qIT4rH3/a0lHn/gLeDoRt1xBllVL9ZcIVrMhEw2b6iQrvhmq3QKUjJY9BfLMju7Mfn4nTV0+p5PGpfT7jQOAAAA=",
+  },
   canadaProperty: {
     src: "/images/canada-property",
     width: 1800,

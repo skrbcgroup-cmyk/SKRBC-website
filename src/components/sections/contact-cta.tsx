@@ -8,7 +8,17 @@ import { routes } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { siteImages } from "@/content/images.generated";
 
-export function ContactCta() {
+type ContactCtaProps = {
+  title?: string;
+  text?: string;
+  buttonLabel?: string;
+};
+
+export function ContactCta({
+  title = "Have a Business Risk or Consulting Challenge?",
+  text = "Let's discuss your business, identify potential risks and explore practical solutions.",
+  buttonLabel = "Request a Consultation",
+}: ContactCtaProps) {
   return (
     <section className="grid bg-ivory lg:grid-cols-2">
       <div className="relative min-h-72 lg:min-h-[32rem]">
@@ -26,15 +36,12 @@ export function ContactCta() {
       <Reveal className="flex flex-col justify-center px-4 py-16 sm:px-12 lg:px-16 lg:py-24 xl:px-24">
         <Eyebrow>Get in Touch</Eyebrow>
         <h2 className="mt-5 max-w-lg text-[2rem] leading-[1.14] text-navy-900 sm:text-4xl lg:text-[2.75rem]">
-          Have a Business Risk or Consulting Challenge?
+          {title}
         </h2>
-        <p className="mt-5 max-w-md text-lg text-slate">
-          Let&apos;s discuss your business, identify potential risks and explore practical
-          solutions.
-        </p>
+        <p className="mt-5 max-w-md text-lg text-slate">{text}</p>
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <ButtonLink href={routes.contact} arrow>
-            Request a Consultation
+            {buttonLabel}
           </ButtonLink>
           <a
             href={siteConfig.contact.whatsapp.link}

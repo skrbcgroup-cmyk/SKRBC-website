@@ -9,6 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import type { FiveSteps } from "@/components/sections/process-steps";
 import { routes } from "@/config/navigation";
 
 export type ServiceSummary = {
@@ -204,4 +205,16 @@ export const engagementSteps = [
   "Identify the scope of work",
   "Provide a customized proposal and fee",
   "Begin the engagement upon approval",
+];
+
+/** SKRBC's general approach (spec 5.5), shown on the homepage. */
+export const approachSteps: FiveSteps = [
+  { name: "Understand", text: "Understand the client's business, objectives and concerns." },
+  {
+    name: "Assess",
+    text: "Identify relevant business, operational, financial, security and strategic risks.",
+  },
+  { name: "Analyze", text: "Evaluate the risks and their potential impact." },
+  { name: "Recommend", text: "Develop practical recommendations and risk mitigation strategies." },
+  { name: "Support", text: "Provide ongoing advisory support where required." },
 ];

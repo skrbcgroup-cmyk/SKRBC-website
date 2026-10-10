@@ -2,32 +2,29 @@ import { Reveal } from "@/components/motion/reveal";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
-const steps = [
-  { name: "Understand", text: "Understand the client's business, objectives and concerns." },
-  {
-    name: "Assess",
-    text: "Identify relevant business, operational, financial, security and strategic risks.",
-  },
-  { name: "Analyze", text: "Evaluate the risks and their potential impact." },
-  { name: "Recommend", text: "Develop practical recommendations and risk mitigation strategies." },
-  { name: "Support", text: "Provide ongoing advisory support where required." },
-];
+export type ProcessStep = { name: string; text: string };
 
-export function OurApproach() {
+/** Exactly five steps: the connecting line is laid out for a five-column row. */
+export type FiveSteps = [ProcessStep, ProcessStep, ProcessStep, ProcessStep, ProcessStep];
+
+type ProcessStepsProps = {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  steps: FiveSteps;
+};
+
+/** Navy five-step process with a gold line that draws in on scroll. */
+export function ProcessSteps({ eyebrow, title, intro, steps }: ProcessStepsProps) {
   return (
     <section className="bg-navy-900 py-20 text-white lg:py-32">
       <Container>
         <Reveal className="grid gap-6 lg:grid-cols-2 lg:items-end lg:gap-12">
           <div>
-            <Eyebrow tone="dark">Our Approach</Eyebrow>
-            <h2 className="mt-5 text-[2rem] leading-[1.14] sm:text-4xl lg:text-5xl">
-              A clear, five-step process.
-            </h2>
+            <Eyebrow tone="dark">{eyebrow}</Eyebrow>
+            <h2 className="mt-5 text-[2rem] leading-[1.14] sm:text-4xl lg:text-5xl">{title}</h2>
           </div>
-          <p className="max-w-xl text-mist lg:justify-self-end">
-            Every engagement follows the same disciplined method, so clients always know where
-            things stand and what comes next.
-          </p>
+          <p className="max-w-xl text-mist lg:justify-self-end">{intro}</p>
         </Reveal>
 
         {/* The gold line draws across (or down, on mobile) once the steps come into view. */}
